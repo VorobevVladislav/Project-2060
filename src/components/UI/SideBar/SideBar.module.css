@@ -1,0 +1,90 @@
+.hospitalName, .wardNumber, .viewDepartament{
+    display: flex;
+    justify-content: center; /* Горизонтальное выравнивание */
+    align-items: center;      /* Вертикальное выравнивание */
+    height: 110px;           /* Обязательно задайте высоту */
+    font-size: 20px;
+    font-weight: 600;
+    background-color: rgb(230, 237, 255);
+    margin: 10px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    text-align: center; /* Выравнивает текст по горизонтали */
+}
+
+ .departamentName {
+    display: flex;
+    justify-content: center; /* Горизонтальное выравнивание */
+    align-items: center;      /* Вертикальное выравнивание */
+    height: 80px;           /* Обязательно задайте высоту */
+    font-size: 20px;
+    font-weight: 600;
+    background-color: rgb(230, 237, 255);
+    margin: 10px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    text-align: center; /* Выравнивает текст по горизонтали */
+}
+
+.wardPagination{
+    font-size: 20px;
+    font-weight: 600;
+    background-color: rgb(185, 204, 255);
+    /*когда просматриваем палату, ее кнопка меняет цвет rgb(116, 148,255) */
+    margin: 10px;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    display: flex;
+    cursor: pointer;
+}
+.currentWard{
+    font-size: 20px;
+    font-weight: 600;
+    /*когда просматриваем палату, ее кнопка меняет цвет rgb(116, 148,255) */
+    margin: 10px;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    display: flex;
+    background-color: rgb(116, 148,255);
+}
+
+.wardPaginator {
+    height: 80px;
+    background-color: rgba(230, 237, 255, 1);
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 10px;
+    font-weight: bold;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.wardPaginator-enter {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  
+  .wardPaginator-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: all 500ms ease-in;
+  }
+  
+  .wardPaginator-exit {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  .wardPaginator-exit-active {
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: all 500ms ease-in;
+  }
