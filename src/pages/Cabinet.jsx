@@ -4,6 +4,8 @@ import PatientList from '../components/PatientList';
 import CabinetSideBar from '../components/UI/SideBar/CabinetSideBar';
 import wards from '../data/wards';
 import Navbar from './Navbar';
+import MyModal from '../components/UI/MyModal/MyModal';
+
 
 const Cabinet = () => {
     const [currentWard, setCurrentWard] = useState(wards[0]);

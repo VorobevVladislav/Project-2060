@@ -15,26 +15,17 @@ const PatientCard = ({ avatar, name, age, pulse, SpO2, litresPerMinute }) => {
     ]
     return (
         <div className={classes.patientCard}>
-            {/* <div className={classes.avatar} style={{ backgroundColor: "rgb(230, 237, 255)" }}>
-                <img src={ava} />
-            </div> */}
-            {/* <div className={classes.patientName}>
-                <b>Пациент:</b> {name}
-            </div>
-            <div className={classes.patientAge}>
-                <b>Возраст:</b> {age}
-            </div> */}
-            <div style={{display: "flex", flexDirection: "row"}}>
-                <div className={classes.bedId}>
-                    <div className={classes.indicator_value}>
-                        1
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                <div style={{ display: "flex", flexDirection: "row" }}>
+                    <div className={classes.bedId}>
+                        <div className={classes.place_value}>
+                            1
+                        </div>
+                        <div className={classes.indicator_place}>
+                            место
+                        </div>
                     </div>
-                    <div className={classes.indicator_name}>
-                        место
-                    </div>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    <div style={{ display: "flex", flexDirection: "column", width: "50%", margin: "5px", justifyContent: "space-between" }}>
+                    <div style={{ display: "flex", flexDirection: "column", width: "50%", marginLeft: "5px", justifyContent: "space-between" }}>
                         <div className={classes.patientName}>
                             {name}
                         </div>
@@ -42,17 +33,15 @@ const PatientCard = ({ avatar, name, age, pulse, SpO2, litresPerMinute }) => {
                             {age} лет
                         </div>
                     </div>
-                    <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", margin: "10px" }}>
-                        <button className={classes.myBtn}>
-                            <img src={change} style={{ height: "35px" }} />
-                        </button>
-                        <button className={classes.myBtn}>
-                            <img src={comment} style={{ height: "35px" }} />
-                        </button>
-                    </div>
                 </div>
-
-
+                <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", marginRight: "10px" }}>
+                    <button className={classes.nullBtn} onClick={() => alert(`Изменить данные пациента ${name}`)}>
+                        <img src={change} style={{ height: "35px" }} />
+                    </button>
+                    <button className={classes.nullBtn} onClick={() => alert(`Добавить комментарий к пациенту ${name}`)}>
+                        <img src={comment} style={{ height: "35px" }} />
+                    </button>
+                </div>
             </div>
             <div className={classes.indicatorsBar}>
                 {indicators.map(({ key, value, name }) => (

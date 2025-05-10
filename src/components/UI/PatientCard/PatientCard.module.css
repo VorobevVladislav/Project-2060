@@ -1,11 +1,10 @@
 .patientCard{
-  height: 350px;
-  width: 90%;
-  border: 3px solid rgb(14, 0, 107);
+  height: 330px;
+  min-width: 250px;
+  border: 5px solid rgb(14, 0, 107);
   border-radius: 10px;
   display: flex;
-  flex-direction:column;
-  align-items:center; /*   Вертикальное выравнивание   */
+  flex-direction: column;
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);/*  Тень */
   margin: 10px;
   padding: 5px;
@@ -28,11 +27,14 @@
 .patientName {
   /* padding: 5px; */
   /* width: 100%; */
+  font-size: 16px;
   font-weight: bold;
+  overflow-wrap: break-word
 }
 .patientAge{
   /* margin: 5px; */
   /* width: 100%; */
+  font-size: 16px;
   font-weight: bold;
 
 }
@@ -49,16 +51,16 @@
     align-items: center;
     justify-content: center;
     background-color: rgb(205, 215, 229);
-    border-radius: 5px;
+    border-radius: 10px;
     font-weight: bold;
 }
-.indicator_value, .bedValue{
-    font-size: 32px;
+.indicator_value, .place_value, .bedValue{
+    font-size: 40px;
     margin-bottom: 6px;
     margin-top: 6px;
 }
-.indicator_name, .bedName{
-    font-size: 18px;
+.indicator_name,.indicator_place, .bedName{
+    font-size: 20px;
 }
 
 .bedId{
@@ -68,16 +70,16 @@
   align-items: center;
   justify-content: center;
   background-color: rgb(205, 215, 229);
-  border-radius: 5px;
+  border-radius: 10px;
   font-weight: bold;
   height: 100px;
-  width: 120px;
+  min-width: 80px;
   box-sizing: border-box;
 }
 
 
 
-.myBtn{
+.nullBtn{
     /* Обнуление стилей кнопки */
     border: none;
     background: none;

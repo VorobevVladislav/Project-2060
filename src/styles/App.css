@@ -3,6 +3,7 @@
     padding: 0;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 18px;
+    overflow-wrap: break-word
     /* justify-content: center; */
     /* align-items: center; */
 }
@@ -10,10 +11,10 @@
 .mainPage {
     display: grid;
     grid-template-columns: 20% 80%;
-    padding-top: 140px; /* Отступ для навбара */
+    padding-top: 20px; /* Отступ для навбара */
     min-height: 100vh; /* Минимальная высота контейнера */
-    margin-top: 20px;
-    width: 90%;
+    margin-top: 140px;
+    width: 80%;
 }
 
 .cabinet {
@@ -112,9 +113,9 @@
     margin-right: 30px;
 }
 
-.addPatient{
-    height: 150px;
-    border: 3px solid rgb(14, 0, 107);
+.addPatient_btn{
+    height: 330px;
+    border: 5px solid rgb(14, 0, 107);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -122,89 +123,39 @@
     justify-content: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);/*  Тень */
     margin: 10px;
+    margin-top: 20px;
     padding: 5px;
     font-weight: bold;
-}
-
-
-
-
-/* .App {
-
-} */
-
-/* * {
-    color: rgb(1, 170, 170);
-    background-color: rgb(17, 17, 16);
-    font-family:'Courier New', Courier, monospace; 
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    }
-    
-    
-    #root {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-
-
-
-.post {
-    display: flex;
-    padding: 15px;
-    border: 2px solid teal;
-    margin-top: 15px;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.post__btns {
-    display: flex;
-}
-
-.post-enter {
-    transform: translateX(-350px);
-}
-.post-enter-active {
-    transform: translateX(0px);
-    transition: all 500ms ease-in;
-}
-.post-exit {
-    opacity: 1;
-}
-.post-exit-active {
-    transform: translateX(-350px);
-    transition: all 500ms ease-in;
-}
-
-.page__wrapper {
-    margin-top: 30px;
-    display: flex;
-}
-
-.page {
-    padding: 10px;
-    border: 1px solid teal;
     cursor: pointer;
+    font-size: 32px;
 }
 
-.page__current {
-    border: 2px solid orange;
-    font-weight: bold;
-}
 
-.navbar {
-    height: 50px;
-    width: 100vw;
+
+.addNewPatient{
     display: flex;
-    align-items: center;
-    padding: 0 15px;
-    background: lightgray;
+    flex-direction: column;
+    width: 80vw;
 }
 
-.navbar__links {
-    margin-left: auto;
-} */
+.addNewPatient input{
+    margin-bottom: 10px;
+}
+
+.addNewPatientGenderBtns{
+    margin: 5px;
+    padding: 5px 15px;
+    background: transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    color: rgba(98, 98, 96, 1);
+    border: 1px solid rgba(98, 98, 96, 1);
+}
+.addNewPatientGenderBtns.Male{
+    color: rgb(34, 0, 255);
+    border: 1px solid rgb(34, 0, 255);
+}
+.addNewPatientGenderBtns.Female{
+    color: rgb(255, 0, 204);
+    border: 1px solid rgb(255, 0, 204);
+}

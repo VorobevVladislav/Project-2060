@@ -2,8 +2,8 @@
     display: flex;
     justify-content: center; /* Горизонтальное выравнивание */
     align-items: center;      /* Вертикальное выравнивание */
-    height: 110px;           /* Обязательно задайте высоту */
-    font-size: 20px;
+    height: 130px;           /* Обязательно задайте высоту */
+    font-size: 24px;
     font-weight: 600;
     background-color: rgb(230, 237, 255);
     margin: 10px;
@@ -17,8 +17,8 @@
     display: flex;
     justify-content: center; /* Горизонтальное выравнивание */
     align-items: center;      /* Вертикальное выравнивание */
-    height: 80px;           /* Обязательно задайте высоту */
-    font-size: 20px;
+    height: 100px;           /* Обязательно задайте высоту */
+    font-size: 24px;
     font-weight: 600;
     background-color: rgb(230, 237, 255);
     margin: 10px;
@@ -29,12 +29,12 @@
 }
 
 .wardPagination{
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 600;
     background-color: rgb(185, 204, 255);
     /*когда просматриваем палату, ее кнопка меняет цвет rgb(116, 148,255) */
     margin: 10px;
-    padding: 20px;
+    padding: 24px;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
@@ -46,16 +46,17 @@
     font-weight: 600;
     /*когда просматриваем палату, ее кнопка меняет цвет rgb(116, 148,255) */
     margin: 10px;
-    padding: 20px;
+    padding: 24px;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
     display: flex;
+    font-size: 24px;
     background-color: rgb(116, 148,255);
 }
 
 .wardPaginator {
-    height: 80px;
+    height: 100px;
     background-color: rgba(230, 237, 255, 1);
     border-radius: 5px;
     display: flex;
@@ -63,28 +64,27 @@
     align-items: center;
     margin: 10px;
     font-weight: bold;
-    font-size: 30px;
     cursor: pointer;
 }
 
 .wardPaginator-enter {
     opacity: 0;
     transform: translateX(-100%);
-  }
+}
   
-  .wardPaginator-enter-active {
+.wardPaginator-enter-active {
     opacity: 1;
     transform: translateX(0);
     transition: all 500ms ease-in;
-  }
+}
   
-  .wardPaginator-exit {
+.wardPaginator-exit {
     opacity: 1;
     transform: translateX(0);
-  }
+}
   
-  .wardPaginator-exit-active {
+.wardPaginator-exit-active {
     opacity: 0;
     transform: translateX(-100%);
     transition: all 500ms ease-in;
-  }
+}
