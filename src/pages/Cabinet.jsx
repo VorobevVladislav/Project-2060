@@ -3,7 +3,7 @@ import './../styles/App.css'
 import PatientList from '../components/PatientList';
 import CabinetSideBar from '../components/UI/SideBar/CabinetSideBar';
 import wards from '../data/wards';
-import Navbar from './Navbar';
+import Navbar from '../components/Navbar';
 import MyModal from '../components/UI/MyModal/MyModal';
 
 
