@@ -3,7 +3,7 @@ import './../styles/App.css';
 import MyInput from './UI/MyInput/MyInput';
 import MyButton from './UI/MyButton/MyButton';
 
-const AddNewPatient = ({ onSave }) => {
+const AddNewDevice = ({ onSave }) => {
     const [surname, setSurname] = useState('');
     const [name, setName] = useState('');
     const [patronymic, setPatronymic] = useState('');
@@ -220,4 +220,4 @@ const AddNewPatient = ({ onSave }) => {
     );
 };
 
-export default AddNewPatient;
+export default AddNewDevice;

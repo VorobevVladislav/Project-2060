@@ -1,8 +1,34 @@
 .myBtn{
     padding: 5px 15px;
     color: rgb(14, 0, 107);
-    background: transparent;
+    /* background: transparent; */
     border: 1px solid rgb(14, 0, 107);
     border-radius: 5px;
     cursor: pointer;
+    background-color: rgba(248, 248, 248, 1);
+    transition: all 0.1s ease; /* Плавные переходы для всех свойств */
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
 }
+
+/* Эффект при наведении */
+.myBtn:hover {
+    background-color: rgb(14, 0, 107);
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень для эффекта "подъема" */
+    transform: translateY(-2px); /* Легкое смещение вверх */
+}
+
+/* Эффект при нажатии */
+.myBtn:active {
+    background-color: rgb(9, 0, 70);
+    transform: translateY(1px); /* Эффект "нажатия" */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Уменьшение тени */
+}
+
+/* Эффект для фокуса (доступность) */
+/* .myBtn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(14, 0, 107, 0.3);
+} */

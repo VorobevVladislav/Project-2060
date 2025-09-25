@@ -17,11 +17,12 @@
     width: 80%;
 }
 
-.cabinet {
+.cabinet, .devices {
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
+
 
 .sidebar {
     position: sticky;
@@ -168,7 +169,14 @@
     /* position: relative; */
 }
 
-.info {
+.info{
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    /* column-count: 2; */
+}
+
+.info_left {
     width: 50%;
     height: 100%;
     background-color: rgba(224, 232, 255, 1);
@@ -177,20 +185,74 @@
     flex-direction: column;
     align-items: center;
     justify-content: end;
-    
+}
+.info_right {
+    margin-left: 50%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.info_mobile {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
 }
 
 .regAndEnter {
     display: flex;
-    width: 50%;
+    width: 100%;
     height: 100%;
-    margin-left: 50%;
 }
 
 .registration, .enter {
     display: flex;
+    box-sizing: border-box;
     height: 100%;
     width: 100%;
     flex-direction: column;
     padding: 30px;
+}
+
+.medicalWorkerForm h2, input, label {
+    font-size: 20px;
+    align-items: center;
+    justify-content: center;
+}
+.medicalWorkerForm input{
+    margin-bottom: 10px;
+}
+.medicalWorkerForm h2{
+    text-align: center;
+    margin-top: 20px;
+}
+
+.patientForm h2, input, label {
+    font-size: 20px;
+    align-items: center;
+    justify-content: center;
+}
+.patientForm input{
+    margin-bottom: 10px;
+}
+.patientForm h2{
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+.enterForm h2, input, label {
+    font-size: 20px;
+    align-items: center;
+    justify-content: center;
+}
+.enterForm input{
+    margin-bottom: 10px;
+}
+.enterForm h2{
+    text-align: center;
+    margin-top: 20px;
 }

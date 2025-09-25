@@ -1,0 +1,20 @@
+.dividerContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background-color: rgba(98, 98, 96, 1);
+}
+
+.dividerText {
+  padding: 0 15px;
+  color: rgba(98, 98, 96, 1);
+  font-size: 20px;
+  font-weight: 600;
+  white-space: nowrap; /* Предотвращает перенос текста */
+}

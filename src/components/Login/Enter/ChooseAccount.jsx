@@ -1,19 +1,23 @@
-import React from 'react';
-import './../styles/App.css'
-import MyButton from '../components/UI/MyButton/MyButton';
-import doctorIcon from "./../images/doctor_icon_2.png";
-import deleteIcon from "./../images/delete_icon.png";
-import addIcon from "./../images/add_icon.png";
+import React, { useState } from 'react';
+import './../../../styles/App.css';
+import MyButton from '../../UI/MyButton/MyButton';
+import doctorIcon from "./../../../images/doctor_icon_2.png";
+import deleteIcon from "./../../../images/delete_icon.png";
+import addIcon from "./../../../images/add_icon.png";
+import { useNavigate } from 'react-router';
 
-const EnterPanel = ({ isRegistration, setIsRegistration }) => {
+const ChooseAccount = ({ isRegistration, setIsRegistration, setCurrentScreen }) => {
+
+    const goTo = useNavigate();
+
     return (
-        <div className='enter'>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                <div style={{ margin: 30, fontSize: 36, color: "rgba(15, 48, 61, 1)", fontWeight: "bold" }}>
+        <div className='chooseAccount'>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                <div style={{ marginBlock: 30, fontSize: 36, color: "rgba(15, 48, 61, 1)", fontWeight: "bold" }}>
                     Выбор аккаунта
                 </div>
                 <MyButton
-                    style={{ margin: 40, fontWeight: "bold" }}
+                    style={{ marginBlock: 30, fontWeight: "bold", width: 180, height: 35 }}
                     onClick={() => setIsRegistration(true)}
                 >
                     К регистрации
@@ -21,7 +25,7 @@ const EnterPanel = ({ isRegistration, setIsRegistration }) => {
             </div>
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 15, width: "100%" }}>
                 <MyButton
-                    onClick={() => alert("Главный врач")}
+                    onClick={() => goTo("/cabinet")}
                     style={{
                         fontSize: 20,
                         padding: 10,
@@ -49,7 +53,7 @@ const EnterPanel = ({ isRegistration, setIsRegistration }) => {
                     </MyButton>
                 </MyButton>
                 <MyButton
-                    onClick={() => alert("Войти в другой аккаунт")}
+                    onClick={() => setCurrentScreen('enter')}
                     style={{
                         fontSize: 20,
                         padding: 10,
@@ -57,7 +61,7 @@ const EnterPanel = ({ isRegistration, setIsRegistration }) => {
                         display: "flex",
                         flexDirection: "row",
                         alignItems: "center",
-
+                        justifyContent: "start"
                     }}
                 >
                     <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10 }}>
@@ -72,4 +76,4 @@ const EnterPanel = ({ isRegistration, setIsRegistration }) => {
     );
 };
 
-export default EnterPanel;
+export default ChooseAccount;

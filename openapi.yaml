@@ -1,0 +1,554 @@
+openapi: 3.1.0
+info:
+  title: Medical API
+  description: API для управления пользователями, сотрудниками, пациентами, терапиями и профилями болезней
+  version: 1.0.0
+servers:
+  - url: "https://test.com"
+# Глобальная защита всех эндпоинтов токеном. Явно отключается на публичных маршрутах.
+security:
+  - BearerAuth: []
+tags:
+  - name: user
+    description: Всё о пользователе
+  - name: employee
+    description: Всё о сотруднике
+  - name: patient
+    description: Всё о пациенте
+  - name: therapy
+    description: Всё о терапии
+  - name: illness-profile
+    description: Всё о профиле болезни
+  - name: comment
+    description: Всё о комментариях врача
+paths:
+  /user:
+    get:
+      tags: [user]
+      summary: Get current user info
+      operationId: getUser
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+              example: { id: 10, username: "theUser", first_name: "Иван", last_name: "Иванов", patronymic: "Иванович", email: "user@example.com" }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /user/{id}:
+    get:
+      tags: [user]
+      summary: Get user info by id
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+              example: { id: 42, username: "petya", first_name: "Пётр", last_name: "Петров", email: "p.petrov@example.com" }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    put:
+      tags: [user]
+      summary: Update user info
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/User' }
+            example: { username: "theUser", first_name: "Иван", last_name: "Иванов", patronymic: "Иванович", email: "user@example.com" }
+      responses:
+        '200': { description: Updated user info, content: { application/json: { schema: { $ref: '#/components/schemas/User' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /user/login:
+    post:
+      tags: [user]
+      summary: Sign in account
+      operationId: signIn
+      security: []  # публичный маршрут
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [login, password]
+              properties:
+                login: { type: string, description: "Логин пользователя (username или email)" }
+                password: { type: string }
+            example: { login: "user@example.com", password: "secret123" }
+      responses:
+        '200':
+          description: Authenticated
+          headers:
+            Authorization:
+              description: Возвращаемый access-token (может дублироваться в body)
+              schema: { type: string, example: "Bearer ey..." }
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Auth' }
+              example: { access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwfQ.signature" }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /user/register:
+    post:
+      tags: [user]
+      summary: Sign up account
+      operationId: signUp
+      security: []  # публичный маршрут
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, email, password]
+              properties:
+                username: { type: string }
+                email: { type: string, format: email }
+                sex: { type: string, description: "Пол", enum: ['M','F'], example: 'F' }
+                phone: { type: string }
+                password: { type: string }
+                first_name: { type: string }
+                last_name: { type: string }
+                patronymic: { type: string }
+                security_question: { type: string }
+                security_answer: { type: string }
+            example: { username: "theUser", email: "user@example.com", password: "secret123", first_name: "Иван", last_name: "Иванов", sex: "M" }
+      responses:
+        '201': { description: Registered, content: { application/json: { schema: { $ref: '#/components/schemas/Auth' }, example: { access_token: "ey..." } } } }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /employee:
+    post:
+      tags: [employee]
+      summary: Create employee
+      operationId: createEmployee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Employee' }
+            example: { user_id: 10, post_title: "Младшая медицинская сестра" }
+      responses:
+        '201': { description: Employee created, content: { application/json: { schema: { $ref: '#/components/schemas/Employee' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /employee/{id}/user:
+    get:
+      tags: [employee, user]
+      summary: Get user connected to employee
+      operationId: getUserByEmployee
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: Successful operation, content: { application/json: { schema: { $ref: '#/components/schemas/User' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /employee/{id}/post:
+    patch:
+      tags: [employee]
+      summary: Update employee post title
+      operationId: updateEmployeePost
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                post_title: { type: string }
+            example: { post_title: "Старшая медсестра" }
+      responses:
+        '200': { description: Updated employee, content: { application/json: { schema: { $ref: '#/components/schemas/Employee' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /therapy:
+    post:
+      tags: [therapy]
+      summary: Create new therapy
+      operationId: createTherapy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Therapy' }
+            example: { assigned_by_id: 2, device_id: 5, patient_id: 3, started_at: "2025-09-14T09:00:00Z" }
+      responses:
+        '201': { description: Therapy created, content: { application/json: { schema: { $ref: '#/components/schemas/Therapy' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    get:
+      tags: [therapy]
+      summary: Get all therapies
+      operationId: getTherapies
+      responses:
+        '200':
+          description: List of therapies
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Therapy' }
+              example: [ { id: 1, assigned_by_id: 2, device_id: 5, patient_id: 3, started_at: "2025-09-14T09:00:00Z", ended_at: null } ]
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /therapy/{id}:
+    get:
+      tags: [therapy]
+      summary: Get therapy by id
+      operationId: getTherapyById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: Therapy found, content: { application/json: { schema: { $ref: '#/components/schemas/Therapy' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    put:
+      tags: [therapy]
+      summary: Update therapy
+      operationId: updateTherapy
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Therapy' }
+            example: { device_id: 6, ended_at: "2025-09-14T10:30:00Z" }
+      responses:
+        '200': { description: Updated therapy, content: { application/json: { schema: { $ref: '#/components/schemas/Therapy' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    delete:
+      tags: [therapy]
+      summary: Delete therapy
+      operationId: deleteTherapy
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '204': { description: Deleted successfully }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /patient/{id}/therapy:
+    get:
+      tags: [therapy, patient]
+      summary: Get therapies by patient id
+      operationId: getTherapyByPatientId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: Patient therapies, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Therapy' } } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /patient/{id}/user:
+    get:
+      tags: [patient, user]
+      summary: Get user connected to patient
+      operationId: getUserByPatient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: User found, content: { application/json: { schema: { $ref: '#/components/schemas/User' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /therapy/{id}/comments:
+    get:
+      tags: [comment]
+      summary: Get therapy comments
+      operationId: getCommentsByTherapyId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Comment' }
+              example: [ { id: 1, therapy_id: 5, author_id: 2, text: "Снизить поток до 2 л/мин", created_at: "2025-09-14T09:45:00Z" } ]
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    post:
+      tags: [comment]
+      summary: Add comment to therapy
+      operationId: addComment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text: { type: string }
+            example: { text: "Повысить целевой SpO2 до 94%" }
+      responses:
+        '201': { description: Comment added, content: { application/json: { schema: { $ref: '#/components/schemas/Comment' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /illness-profile:
+    post:
+      tags: [illness-profile]
+      summary: Create illness profile
+      operationId: createIllnessProfile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/IllnessProfile' }
+            example: { title: "Острый гастрит", minSpO2: 92, maxSpO2: 98, minO2Flow: 1, maxO2Flow: 5, initialO2: 2, flow_response_latency: 30, flow_speed_change: 1 }
+      responses:
+        '201': { description: Illness profile created, content: { application/json: { schema: { $ref: '#/components/schemas/IllnessProfile' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+    get:
+      tags: [illness-profile]
+      summary: Get all illness profiles
+      operationId: getIllnessProfiles
+      responses:
+        '200':
+          description: List of illness profiles
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/IllnessProfile' }
+              example: [ { id: 14, title: "Острый гастрит" } ]
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /patient/{id}/illness-profile:
+    get:
+      tags: [illness-profile, patient]
+      summary: Get patient actual illness profile
+      operationId: getIllnessProfileByPatientId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: Current patient illness profile, content: { application/json: { schema: { $ref: '#/components/schemas/IllnessProfile' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /illness-profile/{id}:
+    get:
+      tags: [illness-profile]
+      summary: Get illness profile by id
+      operationId: getIllnessProfileById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: Illness profile found, content: { application/json: { schema: { $ref: '#/components/schemas/IllnessProfile' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    put:
+      tags: [illness-profile]
+      summary: Update illness profile
+      operationId: updateIllnessProfile
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/IllnessProfile' }
+            example: { title: "Пневмония", maxO2Flow: 6 }
+      responses:
+        '200': { description: Updated illness profile, content: { application/json: { schema: { $ref: '#/components/schemas/IllnessProfile' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    delete:
+      tags: [illness-profile]
+      summary: Delete illness profile
+      operationId: deleteIllnessProfile
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '204': { description: Deleted successfully }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+components:
+  responses:
+    Unauthorized:
+      description: Unauthorized — отсутствует или недействительный токен
+      headers:
+        WWW-Authenticate:
+          description: Схема и причина, например, Bearer error="invalid_token"
+          schema: { type: string, example: 'Bearer error="invalid_token"' }
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { code: "unauthorized", message: "Missing or invalid access token", trace_id: "c4f7d2a1" }
+    Forbidden:
+      description: No access — у пользователя нет прав на действие
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { code: "forbidden", message: "Insufficient permissions (requires role: employee)", trace_id: "e91b0f2d" }
+    NotFound:
+      description: Ресурс не найден
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { code: "not_found", message: "Therapy not found", trace_id: "a1b2c3d4" }
+    Conflict:
+      description: Конфликт состояния (например, дубликат)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { code: "conflict", message: "User with this login already exists" }
+  schemas:
+    User:
+      type: object
+      properties:
+        id: { type: integer, example: 10 }
+        username: { type: string, example: theUser }
+        first_name: { type: string }
+        last_name: { type: string }
+        patronymic: { type: string }
+        email: { type: string, format: email }
+    Employee:
+      type: object
+      properties:
+        id: { type: integer, example: 2 }
+        user_id: { type: integer, example: 10 }
+        post_title: { type: string, example: "Младшая медицинская сестра" }
+    Patient:
+      type: object
+      properties:
+        id: { type: integer, example: 3 }
+        birthdate: { type: string, format: date, example: 2010-01-01 }
+        user_id: { type: integer, example: 20 }
+    Therapy:
+      type: object
+      properties:
+        id: { type: integer, example: 1 }
+        assigned_by_id: { type: integer, description: Employee id }
+        device_id: { type: integer, description: Device where therapy goes }
+        patient_id: { type: integer }
+        started_at: { type: string, format: date-time }
+        ended_at: { type: ["string", "null"], format: date-time }
+    IllnessProfile:
+      type: object
+      properties:
+        id: { type: integer, example: 14 }
+        title: { type: string, example: "Острый гастрит" }
+        minSpO2: { type: integer }
+        maxSpO2: { type: integer }
+        minO2Flow: { type: integer }
+        maxO2Flow: { type: integer }
+        initialO2: { type: integer }
+        flow_response_latency: { type: integer }
+        flow_speed_change: { type: integer }
+    Comment:
+      type: object
+      properties:
+        id: { type: integer, example: 1 }
+        therapy_id: { type: integer, example: 5 }
+        author_id: { type: integer, description: Employee id }
+        text: { type: string }
+        created_at: { type: string, format: date-time }
+    Auth:
+      type: object
+      properties:
+        access_token: { type: string }
+    Error:
+      type: object
+      properties:
+        code: { type: string, example: "forbidden" }
+        message: { type: string, example: "Insufficient permissions" }
+        details:
+          type: object
+          description: Доп. сведения для фронта (например, какие поля не прошли валидацию, какие роли требуются)
+          additionalProperties: true
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
