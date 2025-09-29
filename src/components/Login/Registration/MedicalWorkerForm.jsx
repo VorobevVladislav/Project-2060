@@ -53,7 +53,7 @@ const MedicalWorkerForm = ({ setCurrentScreen }) => {
                 </div>
                 <MyButton
                     style={{ marginBlock: 30, fontWeight: "bold", width: 180, height: 35 }}
-                    onClick={() => setCurrentScreen('type-select')}
+                    onClick={() => setCurrentScreen('choose-registration')}
                 >
                     Назад
                 </MyButton>

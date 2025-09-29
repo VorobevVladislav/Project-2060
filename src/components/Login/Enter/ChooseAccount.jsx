@@ -5,8 +5,9 @@ import doctorIcon from "./../../../images/doctor_icon_2.png";
 import deleteIcon from "./../../../images/delete_icon.png";
 import addIcon from "./../../../images/add_icon.png";
 import { useNavigate } from 'react-router';
+import { users } from '../../../data/users';
 
-const ChooseAccount = ({ isRegistration, setIsRegistration, setCurrentScreen }) => {
+const ChooseAccount = ({ setCurrentScreen }) => {
 
     const goTo = useNavigate();
 
@@ -18,40 +19,42 @@ const ChooseAccount = ({ isRegistration, setIsRegistration, setCurrentScreen }) 
                 </div>
                 <MyButton
                     style={{ marginBlock: 30, fontWeight: "bold", width: 180, height: 35 }}
-                    onClick={() => setIsRegistration(true)}
+                    onClick={() => setCurrentScreen('choose-registration')}
                 >
                     К регистрации
                 </MyButton>
             </div>
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 15, width: "100%" }}>
-                <MyButton
-                    onClick={() => goTo("/cabinet")}
-                    style={{
-                        fontSize: 20,
-                        padding: 10,
-                        fontWeight: "bold",
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        position: 'relative',
-                        zIndex: 1
-                    }}
-                >
-                    <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10 }}>
-                        <img src={doctorIcon} style={{ width: 50, height: 50, marginInline: 20 }} />
-                        <div>
-                            Главный врач
-                        </div>
-                    </div>
+                {users.map((user) =>
                     <MyButton
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            alert("Удалить аккаунт")
-                        }}>
-                        <img src={deleteIcon} style={{ width: 36, height: 36 }} />
+                        onClick={() => goTo("/cabinet")}
+                        style={{
+                            fontSize: 20,
+                            padding: 10,
+                            fontWeight: "bold",
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            position: 'relative',
+                            zIndex: 1
+                        }}
+                    >
+                        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10 }}>
+                            <img src={doctorIcon} style={{ width: 50, height: 50, marginInline: 20 }} />
+                            <div>
+                                {user.role} {user.last_name} {user.first_name[0]}. {user.patronymic[0]}.
+                            </div>
+                        </div>
+                        <MyButton
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                alert(`Забыть аккаунт ${user.role} ${user.last_name} ${user.first_name[0]}. ${user.patronymic[0]}.`)
+                            }}>
+                            <img src={deleteIcon} style={{ width: 36, height: 36 }} />
+                        </MyButton>
                     </MyButton>
-                </MyButton>
+                )}
                 <MyButton
                     onClick={() => setCurrentScreen('enter')}
                     style={{

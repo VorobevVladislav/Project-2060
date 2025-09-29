@@ -1,12 +1,31 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import MyButton from '../../UI/MyButton/MyButton';
 import MyInput from '../../UI/MyInput/MyInput';
 import Divider from '../../UI/Divider/Divider';
+import { MainContext } from '../../..';
+import { useNavigate } from 'react-router';
+import { CABINET_ROUTE } from '../../../utils/consts';
+import { login } from '../../../API/userApi';
 
-const EnterForm = ({ isRegistration, setIsRegistration, setCurrentScreen }) => {
+const EnterForm = ({ setCurrentScreen }) => {
+
     const [telelphoneOrEmailOrID, setTelelphoneOrEmailOrID] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+
+    const { user } = useContext(MainContext)
+    const navigate = useNavigate()
+
+    const loginFunc = async (telelphoneOrEmailOrID, password) => {
+        try {
+            const data = await login(telelphoneOrEmailOrID, password)
+            user.setIsAuth(true)
+            user.setUser(user)
+            navigate(CABINET_ROUTE)
+        } catch (e) {
+            alert(e.response.data.message)
+        }
+    }
 
     return (
         <div className='enterForm'>
@@ -16,7 +35,7 @@ const EnterForm = ({ isRegistration, setIsRegistration, setCurrentScreen }) => {
                 </div>
                 <MyButton
                     style={{ marginBlock: 30, fontWeight: "bold", width: 180, height: 35 }}
-                    onClick={() => setIsRegistration(true)}
+                    onClick={() => setCurrentScreen('choose-registration')}
                 >
                     К регистрации
                 </MyButton>
@@ -28,6 +47,7 @@ const EnterForm = ({ isRegistration, setIsRegistration, setCurrentScreen }) => {
                 name="telelphoneOrEmailOrID"
                 type="text"
                 value={telelphoneOrEmailOrID}
+                placeholder='Введите email'
                 onChange={(e) => setTelelphoneOrEmailOrID(e.target.value)}
             />
             <label htmlFor="password">Пароль</label>
@@ -36,6 +56,7 @@ const EnterForm = ({ isRegistration, setIsRegistration, setCurrentScreen }) => {
                 name="password"
                 type={showPassword ? "text" : "password"}
                 value={password}
+                placeholder='Введите пароль'
                 onChange={(e) => setPassword(e.target.value)}
             />
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
@@ -52,6 +73,7 @@ const EnterForm = ({ isRegistration, setIsRegistration, setCurrentScreen }) => {
                 <MyButton>Восстановить пароль</MyButton>
             </div>
             <MyButton
+                onClick={loginFunc}
                 style={{
                     display: "flex",
                     width: "100%",
@@ -60,6 +82,7 @@ const EnterForm = ({ isRegistration, setIsRegistration, setCurrentScreen }) => {
                     backgroundColor: "rgba(97, 126, 198, 1)",
                     borderColor: "rgba(97, 126, 198, 1)",
                     color: "white"
+
                 }}>
                 ВОЙТИ
             </MyButton>
